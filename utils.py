@@ -134,9 +134,23 @@ def default_config() -> dict[str, Any]:
         "discord_token": "",
         "grok_api_key": "",
         "openai_api_key": "",
-        "grok_model": "grok-4.3",
-        "grok_api_url_text": "https://api.x.ai/v1/responses",
+        "grok_model": os.getenv("XAI_MODEL", "grok-4.3"),
+        "grok_vision_model": os.getenv("XAI_VISION_MODEL", "grok-4.3"),
+        "grok_api_url_text": os.getenv("XAI_API_URL_TEXT", "https://api.x.ai/v1/responses"),
         "lm_studio_url": "http://127.0.0.1:1234/v1/chat/completions",
+        "video_api_url": os.getenv("VIDEO_API_URL", ""),
+        "video_api_key": os.getenv("VIDEO_API_KEY", ""),
+        "video_model": os.getenv("VIDEO_MODEL", ""),
+        "video_duration_seconds": 5,
+        "video_aspect_ratio": "16:9",
+        "video_ticket_cost": 5,
+        "video_api_timeout": 180,
+        "game_news_feeds": [],
+        "enable_game_news_auto": False,
+        "game_news_channel_id": "",
+        "game_search_api_url": os.getenv("GAME_SEARCH_API_URL", ""),
+        "game_search_api_key": os.getenv("GAME_SEARCH_API_KEY", ""),
+        "activity_reminders": [],
         "enable_economy": True,
         "enable_gacha": True,
         "coin_daily_limit": 500,
@@ -185,7 +199,12 @@ def default_config() -> dict[str, Any]:
         "yt_discord_channel_id": "",
         "reminders": [],
         "enable_eew": False,
+        "enable_eew_ws": False,
         "eew_channel_id": "",
+        "eew_websocket_url": "wss://ws-eew.teew.tw/",
+        "cwa_api_key": os.getenv("CWA_API_KEY", ""),
+        "bot_latitude": 22.68,
+        "bot_longitude": 120.30,
     }
 
 
@@ -199,8 +218,12 @@ def load_config() -> dict[str, Any]:
         merged["admin_ids"] = [x.strip() for x in merged["admin_ids"].split(",") if x.strip()]
     if isinstance(merged.get("yt_channel_ids"), str):
         merged["yt_channel_ids"] = [x.strip() for x in merged["yt_channel_ids"].splitlines() if x.strip()]
+    if isinstance(merged.get("game_news_feeds"), str):
+        merged["game_news_feeds"] = [x.strip() for x in merged["game_news_feeds"].replace(",", "\n").splitlines() if x.strip()]
     if not isinstance(merged.get("reminders"), list):
         merged["reminders"] = []
+    if not isinstance(merged.get("activity_reminders"), list):
+        merged["activity_reminders"] = []
     return merged
 
 
