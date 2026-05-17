@@ -1,0 +1,25 @@
+# Secrets
+.env
+config.json
+
+# Runtime data
+api_usage.json
+bot_logs.txt
+rss_history.json
+yt_history.json
+assets/ai_draws/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
